@@ -8,12 +8,25 @@ namespace dotnet_rpg.Controllers
     [Route("api/[controller]")]
     public class CharacterController : ControllerBase
     {
-        private static Character _knight = new Character();
+        private static List<Character> _characters = new List<Character>()
+        {
+            new Character(),
+            new Character(){ Id = 1,Name = "Brian Cluster"}
+        };
+
+
+        [HttpGet("{id}")]
+        public ActionResult<Character> Get(int id)
+        {
+            return Ok(_characters.FirstOrDefault(c => c.Id == id));
+        }
+
 
         [HttpGet]
-        public ActionResult<Character> Get()
+        [Route("GetAll")]
+        public ActionResult<List<Character>> GetAll()
         {
-            return Ok(_knight);
+            return Ok(_characters);
         }
     }
 }
