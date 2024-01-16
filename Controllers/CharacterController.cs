@@ -21,11 +21,17 @@ namespace dotnet_rpg.Controllers
             return Ok(_characters.FirstOrDefault(c => c.Id == id));
         }
 
-
         [HttpGet]
         [Route("GetAll")]
         public ActionResult<List<Character>> GetAll()
         {
+            return Ok(_characters);
+        }
+
+        [HttpPost]
+        public ActionResult<List<Character>> AddCharacter(Character newCharacter)
+        {
+            _characters.Add(newCharacter);
             return Ok(_characters);
         }
     }
