@@ -4,7 +4,7 @@
     {
         public ServiceResponse()
         {
-            isSuccesful = true;
+            isSuccessful = true;
             Message = String.Empty;
         }
 
