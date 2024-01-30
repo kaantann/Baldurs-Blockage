@@ -1,4 +1,5 @@
-﻿using dotnet_rpg.DTOs.Character;
+﻿using System.Security.Claims;
+using dotnet_rpg.DTOs.Character;
 using dotnet_rpg.Models;
 using dotnet_rpg.Services.CharacterService;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +29,8 @@ namespace dotnet_rpg.Controllers
         [Route("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterResponseDTO>>>> GetAll()
         {
-            return Ok(await _characterService.GetAllCharacters());
+            int userID = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
+            return Ok(await _characterService.GetAllCharacters(userID));
         }
 
         [HttpPost]
