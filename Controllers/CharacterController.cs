@@ -29,8 +29,7 @@ namespace dotnet_rpg.Controllers
         [Route("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterResponseDTO>>>> GetAll()
         {
-            int userID = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
-            return Ok(await _characterService.GetAllCharacters(userID));
+            return Ok(await _characterService.GetAllCharacters());
         }
 
         [HttpPost]
