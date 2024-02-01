@@ -29,7 +29,7 @@ namespace dotnet_rpg.Services.CharacterService
         public async Task<ServiceResponse<List<GetCharacterResponseDTO>>> AddCharacter(AddCharacterRequestDTO newCharacter)
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterResponseDTO>>();
-            var character =_mapper.Map<Character>(newCharacter);
+            var character = _mapper.Map<Character>(newCharacter);
             character.User = await _context.Users.FirstOrDefaultAsync(user => user.Id == GetUserID());
 
             _context.Characters.Add(character);
@@ -44,7 +44,10 @@ namespace dotnet_rpg.Services.CharacterService
         public async Task<ServiceResponse<List<GetCharacterResponseDTO>>> GetAllCharacters()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterResponseDTO>>();
-            var dbCharacters = await _context.Characters.Where(c=> c.User!.Id == GetUserID()).ToListAsync();
+            var dbCharacters = await _context.Characters
+                .Include(c => c.Weapon)
+                .Include(c => c.Skills)
+                .Where(c => c.User!.Id == GetUserID()).ToListAsync();
             serviceResponse.Data = dbCharacters.Select(c => _mapper.Map<GetCharacterResponseDTO>(c)).ToList();
             //serviceResponse.Data = _characters.Select(c => _mapper.Map<GetCharacterResponseDTO>(c)).ToList();
             return serviceResponse;
@@ -53,8 +56,10 @@ namespace dotnet_rpg.Services.CharacterService
         public async Task<ServiceResponse<GetCharacterResponseDTO>> GetCharacterByID(int id)
         {
             var serviceResponse = new ServiceResponse<GetCharacterResponseDTO>();
-            var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id && c.User!.Id == GetUserID());
-            //var character = _characters.FirstOrDefault(x => x.Id == id);
+            var dbCharacter = await _context.Characters
+                .Include(c => c.Weapon)
+                .Include(c => c.Skills)
+                .FirstOrDefaultAsync(c => c.Id == id && c.User!.Id == GetUserID());
 
             serviceResponse.Data = _mapper.Map<GetCharacterResponseDTO>(dbCharacter);
             return serviceResponse;
@@ -177,7 +182,7 @@ namespace dotnet_rpg.Services.CharacterService
                 response.Message = ex.Message;
             }
 
-                return response;
+            return response;
 
         }
     }
