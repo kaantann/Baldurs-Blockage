@@ -53,5 +53,11 @@ namespace dotnet_rpg.Controllers
 
             return (response.Data is null) ? NotFound(response) : Ok(response);
         }
+
+        [HttpPost("Skill")]
+        public async Task<ActionResult<ServiceResponse<GetCharacterResponseDTO>>> AddCharacterSkill(AddCharacterSkillDTO newCharacterSkill)
+        {
+            return Ok(await _characterService.AddCharacterSkill(newCharacterSkill));
+        }
     }
 }

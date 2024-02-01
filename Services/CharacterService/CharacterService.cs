@@ -133,5 +133,52 @@ namespace dotnet_rpg.Services.CharacterService
         {
             return int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         }
+
+        public async Task<ServiceResponse<GetCharacterResponseDTO>> AddCharacterSkill(AddCharacterSkillDTO newCharacterSkill)
+        {
+            var response = new ServiceResponse<GetCharacterResponseDTO>();
+
+            try
+            {
+                var character = await _context.Characters
+                    .Include(c => c.Weapon)
+                    .Include(c => c.Skills)
+                    .FirstOrDefaultAsync(c => c.Id == newCharacterSkill.CharacterID && c.User!.Id == GetUserID());
+
+                if (character is null)
+                {
+                    response.isSuccessful = false;
+                    response.Message = "Character not found.";
+
+                    return response;
+                }
+
+
+                var skill = await _context.Skills
+                    .FirstOrDefaultAsync(s => s.ID == newCharacterSkill.SkillID);
+
+                if (skill is null)
+                {
+                    response.isSuccessful = false;
+                    response.Message = "Skill not found.";
+
+                    return response;
+                }
+
+                character.Skills.Add(skill);
+                await _context.SaveChangesAsync();
+
+                response.Data = _mapper.Map<GetCharacterResponseDTO>(character);
+
+            }
+            catch (Exception ex)
+            {
+                response.isSuccessful = false;
+                response.Message = ex.Message;
+            }
+
+                return response;
+
+        }
     }
 }

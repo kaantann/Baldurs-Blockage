@@ -1,4 +1,5 @@
-﻿using dotnet_rpg.DTOs.Weapon;
+﻿using dotnet_rpg.DTOs.Skill;
+using dotnet_rpg.DTOs.Weapon;
 using dotnet_rpg.Models;
 
 namespace dotnet_rpg.DTOs.Character
@@ -13,5 +14,6 @@ namespace dotnet_rpg.DTOs.Character
         public int Intelligence { get; set; }
         public RpgClass ClassType { get; set; }
         public GetWeaponDTO? Weapon { get; set; }
+        public List<GetSkillDTO> Skills { get; set; }
     }
 }
