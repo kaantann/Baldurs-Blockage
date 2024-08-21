@@ -7,7 +7,7 @@
 #### The true excitement unfolds as characters enter the arena, engaging in thrilling battles to determine the ultimate champion. Witness the outcomes of strategic decisions and skillful maneuvering as characters clash in epic encounters.
 
 
-##### Here what I learnt from the course : 
+##### Here are what I learnt : 
 - Build a complete .NET 7 back-end with Web API, Entity Framework Core, SQL Server.
 - Implement Token Authentication with JSON Web Tokens & Roles.
 - Utilize all three types of relationships in your database: one-to-one, one-to-many, many-to-many.
